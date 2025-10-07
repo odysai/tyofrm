@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anonymous FRM Submission</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: url('https://taiyouth.org/wp-content/uploads/2023/03/android-chrome-512x512-1.png') no-repeat center center fixed;
+      background-size: contain;
+      background-color: #f4f4f4;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .container {
+      max-width: 600px;
+      width: 100%;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      position: relative;
+      transition: opacity 1s ease;
+      z-index: 2;
+    }
+
+    h2 {
+      text-align: center;
+      color: #2b2b2b;
+      font-size: 1.5em;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 1em;
+    }
+
+    select, textarea, input[type="submit"] {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    input[type="submit"] {
+      background-color: #52affb;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #005fa3;
+    }
+
+    .loading-spinner {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 60px;
+      height: 60px;
+      margin: -30px 0 0 -30px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #52affb 40%, transparent 41%);
+      box-shadow: 0 0 0 0 rgba(82, 175, 251, 0.7);
+      animation: pulse 1.5s infinite ease-in-out;
+      z-index: 3;
+      display: none;
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(82, 175, 251, 0.7);
+      }
+      70% {
+        box-shadow: 0 0 0 20px rgba(82, 175, 251, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(82, 175, 251, 0);
+      }
+    }
+
+    .wait-message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.95);
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      font-size: 1.2em;
+      color: #2b2b2b;
+      text-align: center;
+      z-index: 4;
+      display: none;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes runAway {
+      0% { transform: translate(-50%, -50%); opacity: 1; }
+      100% { transform: translate(200vw, -50%); opacity: 0; }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+
+      .container {
+        padding: 15px;
+      }
+
+      h2 {
+        font-size: 1.3em;
+      }
+
+      label, select, textarea, input[type="submit"] {
+        font-size: 0.95em;
+      }
+
+      .loading-spinner {
+        width: 40px;
+        height: 40px;
+        margin: -20px 0 0 -20px;
+      }
+
+      .wait-message {
+        font-size: 1em;
+        padding: 15px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="loading-spinner" id="spinner"></div>
+  <div class="wait-message" id="waitMessage">⏳ Wait a moment…</div>
+
+  <div class="container" id="formContainer">
+    <h2>FRM Submission</h2>
+    <form action="https://formspree.io/f/xgvldwby" method="POST" id="frmForm">
+      <label for="type">Type of Submission</label>
+      <select name="type" id="type" required>
+        <option value="Feedback">Feedback</option>
+        <option value="Request">Request</option>
+        <option value="Report">Report</option>
+      </select>
+
+      <label for="message">Your Message</label>
+      <textarea name="message" id="message" rows="6" placeholder="Write your message here..." required></textarea>
+
+      <input type="submit" value="Submit Anonymously">
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('frmForm');
+    const container = document.getElementById('formContainer');
+    const spinner = document.getElementById('spinner');
+    const waitMessage = document.getElementById('waitMessage');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      container.style.opacity = '0';
+      spinner.style.display = 'block';
+      waitMessage.style.display = 'block';
+
+      setTimeout(() => {
+        spinner.style.display = 'none';
+        waitMessage.style.animation = 'runAway 1s ease forwards';
+
+        setTimeout(() => {
+          form.submit();
+        }, 1000);
+      }, 3000);
+    });
+  </script>
+
+</body>
+</html>
